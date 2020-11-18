@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import DataComponent from './DataComponent';
 
 const Svg = styled.svg`
-  margin-right: 8px;
+  margin-right: 16px;
   width: 1.8em;
 `;
 

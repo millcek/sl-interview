@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { colors } from '../styles';
+import Spinner from 'react-bootstrap/Spinner';
 
 type Props = {
   children: React.ReactNode;
@@ -25,22 +26,6 @@ const Loading = styled.div`
   margin: 16px;
 `;
 
-const Spinner = styled.div`
-  display: inline-block;
-  width: 2rem;
-  height: 2rem;
-  vertical-align: text-bottom;
-  border: .25em solid currentColor;
-  border-right-color: transparent;
-  border-radius: 50%;
-  -webkit-animation: spinner-border .75s linear infinite;
-  animation: spinner-border .75s linear infinite;
-
-  @keyframes spinner-border {
-    to { transform: rotate(360deg); }
-  }
-`;
-
 export default function DataComponent(props: Props) {
   if (props.error) {
     return (
@@ -60,7 +45,7 @@ export default function DataComponent(props: Props) {
 
   return (
     <Loading>
-      <Spinner />
+      <Spinner animation="grow" />
     </Loading>
   );
 }

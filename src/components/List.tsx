@@ -26,6 +26,10 @@ const row = css`
       background: ${colors.background.hover};
       cursor: pointer;
     }
+
+    :active {
+      background: ${colors.background.active}
+    }
   }
 `;
 

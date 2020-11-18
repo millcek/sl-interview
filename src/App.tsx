@@ -1,62 +1,58 @@
 import React from 'react';
 import UserList from './components/UserList';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import UserDetail from './components/UserDetail';
 import PostDetail from './components/PostDetail';
-import styled from '@emotion/styled';
+import { Container, Row, Col } from 'react-bootstrap';
 
-const Root = styled.div`
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  height: 100%;
-`;
-
-const Sidebar = styled.div`
-  overflow: auto;
-  height: 100%;
-  height: 100%;
-  border-right: 1px solid #ccc;
-`;
-
-const Main = styled.div`
-  overflow: auto;
-  height: 100%;
-`;
+function Column(props: { children?: React.ReactNode }) {
+  return props.children ? (
+    <Col
+      xl={4}
+      lg={6}
+      sm={12}
+    >
+      {props.children}
+    </Col>
+  ) : null;
+}
 
 function App() {
   return (
-    <Root>
-      <BrowserRouter>
-        <Route
-          exact
-          path="/"
-          component={UserList}
-        />
-        <Sidebar>
-          <Route
-            path="/users/:userId"
-            component={UserList}
-          />
-        </Sidebar>
-        <Main>
-          <Route
-            path="/users/:userId/posts/:postId"
-            component={UserDetail}
-          />
+    <BrowserRouter>
+      <Container>
+        <Row>
           <Route
             exact
-            path="/users/:userId"
-            component={UserDetail}
+            path="/"
+            component={UserList}
           />
-          <Route
-            path="/users/:userId/posts/:postId"
-            component={PostDetail}
-          />
-        </Main>
-      </BrowserRouter>
-    </Root>
+          <Column>
+            <Route
+              path="/users/:userId"
+              component={UserList}
+            />
+          </Column>
+          <Column>
+            <Route
+              path="/users/:userId/posts/:postId"
+              component={UserDetail}
+            />
+            <Route
+              exact
+              path="/users/:userId"
+              component={UserDetail}
+            />
+          </Column>
+          <Column>
+            <Route
+              path="/users/:userId/posts/:postId"
+              component={PostDetail}
+            />
+          </Column>
+        </Row>
+      </Container>
+    </BrowserRouter>
   );
 }
 
