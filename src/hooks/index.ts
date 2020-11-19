@@ -1,24 +1,38 @@
 import React from 'react';
 import { User, Comment, Post } from '../api';
 
+const data: { [url: string]: any } = {};
+
 function useFetcher<T>(url?: string) {
   const [error, setError] = React.useState<string>();
-  const [data, setData] = React.useState<T>();
+  const [stateData, setStateData] = React.useState<T>();
   React.useEffect(
     () => {
       if (url) {
-        setData(undefined);
-        fetch('https://jsonplaceholder.typicode.com/' + url)
-          .then(response => response.json())
-          .then(setData)
-          .then(() => setError(undefined))
-          .catch(error => setError(error.message))
+        if (data[url]) {
+          setError(undefined);
+          setStateData(data[url]);
+        } else {
+          setStateData(undefined);
+          fetch('https://jsonplaceholder.typicode.com/' + url)
+            .then(response => response.json())
+            .then(newData => {
+              setStateData(newData);
+              setError(undefined);
+              data[url] = newData;
+            })
+            .catch(error => {
+              setError(error.message);
+            })
+            ;
+        }
       }
     },
     [url]
   );
+
   return {
-    data,
+    data: stateData,
     error
   };
 }
