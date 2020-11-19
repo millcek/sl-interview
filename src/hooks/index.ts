@@ -77,3 +77,11 @@ export function useComments(postId: number) {
     error
   };
 }
+
+export function useComment(commentId: number) {
+  const { data: comment, error } = useFetcher<Comment>('comments/' + commentId);
+  return {
+    comment,
+    error
+  };
+}

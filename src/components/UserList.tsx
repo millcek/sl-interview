@@ -5,6 +5,7 @@ import List from './List';
 import { User } from '../api';
 import styled from '@emotion/styled';
 import DataComponent from './DataComponent';
+import Title from './Title';
 
 const Svg = styled.svg`
   margin-right: 16px;
@@ -20,9 +21,10 @@ export default function UserList() {
       data={users}
       error={error}
     >
+      <Title>Users</Title>
       <List<User>
         data={users}
-        onClick={user => history.push(`/users/${user.id}`)}
+        onClick={user => history.push(`/user/${user.id}`)}
         isActive={item => String(item.id) === params.userId}
         descriptor={[
           {

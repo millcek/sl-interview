@@ -1,54 +1,51 @@
 import React from 'react';
-import styled from '@emotion/styled'
-import { useComments, usePost, useUser } from '../hooks';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { useComments, usePost } from '../hooks';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import List from './List';
 import { Comment } from '../api';
 import DataComponent from './DataComponent';
+import Title from './Title';
+import TextBox from './TextBox';
 
 type RouteParams = {
   postId: string;
   userId: string;
+  commentId?: string;
 };
 
-const Title = styled.div`
-  font-size: 1.6em;
-`;
-
-const Subtitle = styled.div`
-  font-size: 1.2em;
-`;
-
 export default function PostDetail() {
+  const history = useHistory();
+  const { params } = useRouteMatch<RouteParams>();
 
-  const match = useRouteMatch<RouteParams>();
-  const postId = Number(match.params.postId);
-  const { post, error: postError } = usePost(postId);
-  const { user, error: userError = postError } = useUser(post?.userId);
-  const { comments, error = userError } = useComments(postId);
+  const postId = Number(params.postId);
+  const userId = Number(params.userId);
+  const commentId = Number(params.commentId);
+
+  const idError = postId && userId ? undefined : 'Wrong ID';
+
+  const { post, error: postError = idError } = usePost(postId);
+  const { comments, error = postError } = useComments(postId);
+
   return (
     <DataComponent
-      data={user && post && comments}
+      data={post && comments}
       error={error}
     >
-      <div>
-        <Title>
-          {post?.title}
-        </Title>
-        <Subtitle>
-          <Link to={`/users/${user?.id}`}>
-            {user?.name}
-          </Link>
-        </Subtitle>
-        <List<Comment>
-          onClick={() => null}
-          data={comments}
-          descriptor={[{
-            key: 'name',
-            title: 'Name'
-          }]}
-        />
-      </div>
+      <Title>
+        {post?.title}
+      </Title>
+      <TextBox>
+        {post?.body}
+      </TextBox>
+      <List<Comment>
+        onClick={item => history.push(`/user/${userId}/post/${postId}/comment/${item.id}`)}
+        isActive={item => item.id === commentId}
+        data={comments}
+        descriptor={[{
+          key: 'name',
+          title: 'Comments'
+        }]}
+      />
     </DataComponent>
   );
 }

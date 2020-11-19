@@ -7,10 +7,12 @@ import DataComponent from './DataComponent';
 import styled from '@emotion/styled';
 import { colors } from '../styles';
 import { css } from '@emotion/css';
+import Title from './Title';
 
 const Table = styled.table`
   margin: 8px auto;
   border-spacing: 0;
+  width: 100%;
 `;
 
 const HeadCell = styled.td`
@@ -37,7 +39,8 @@ const Hyperlink = styled.a`
 export default function UserDetail() {
   const { params } = useRouteMatch<{ userId: string, postId: string }>();
   const userId = Number(params.userId);
-  const { user, error: userError } = useUser(userId);
+  const userIdError = userId ? undefined : 'Wrong user ID';
+  const { user, error: userError = userIdError } = useUser(userId);
   const { posts, error = userError } = usePosts(userId);
   const history = useHistory();
   return (
@@ -45,32 +48,31 @@ export default function UserDetail() {
       data={user && posts}
       error={error}
     >
-      <div>
-        <Table>
-          <tbody>
-            <Row title="Name" value={user?.name} />
-            <Row title="Company" value={user?.company.name} />
-            <Row title="City" value={user?.address.city} />
-            <Row
-              title="E-mail"
-              value={<Hyperlink href={`mailto:${user?.email}`}>{user?.email}</Hyperlink>}
-            />
-            <Row
-              title="Phone"
-              value={<Hyperlink href={`tel:${user?.phone}`}>{user?.phone}</Hyperlink>}
-            />
-          </tbody>
-        </Table>
-        <List<Post>
-          isActive={item => String(item.id) === params.postId}
-          onClick={post => history.push(`/users/${userId}/posts/${post.id}`)}
-          data={posts}
-          descriptor={[{
-            key: 'title',
-            title: 'Title'
-          }]}
-        />
-      </div>
+      <Title>User detail</Title>
+      <Table>
+        <tbody>
+          <Row title="Name" value={user?.name} />
+          <Row title="Company" value={user?.company.name} />
+          <Row title="City" value={user?.address.city} />
+          <Row
+            title="E-mail"
+            value={<Hyperlink href={`mailto:${user?.email}`}>{user?.email}</Hyperlink>}
+          />
+          <Row
+            title="Phone"
+            value={<Hyperlink href={`tel:${user?.phone}`}>{user?.phone}</Hyperlink>}
+          />
+        </tbody>
+      </Table>
+      <List<Post>
+        isActive={item => String(item.id) === params.postId}
+        onClick={post => history.push(`/user/${userId}/post/${post.id}`)}
+        data={posts}
+        descriptor={[{
+          key: 'title',
+          title: 'Posts'
+        }]}
+      />
     </DataComponent>
   );
 }

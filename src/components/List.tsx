@@ -26,10 +26,6 @@ const row = css`
       background: ${colors.background.hover};
       cursor: pointer;
     }
-
-    :active {
-      background: ${colors.background.active}
-    }
   }
 `;
 
@@ -38,6 +34,10 @@ const active = css`
     background-color: ${colors.background.active};
     color: #fff;
     pointer-events: none;
+    
+    :hover {
+      background: ${colors.background.active};
+    }
   }
 `;
 
