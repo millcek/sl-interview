@@ -19,6 +19,4 @@ test('renders learn react link', async () => {
 
   const getCommentDetailElement = () => screen.getByText('laudantium enim quasi est quidem magnam voluptate ipsam eos tempora quo necessitatibus dolor quam autem quasi reiciendis et nam sapiente accusantium');
   await waitFor(getCommentDetailElement);
-  
-  expect(getCommentDetailElement()).toBeInTheDocument();
 });
