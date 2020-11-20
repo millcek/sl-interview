@@ -31,7 +31,7 @@ const row = css`
 
 const active = css`
   :not(:first-of-type) {
-    background-color: ${colors.background.active};
+    background: ${colors.background.active};
     color: #fff;
     pointer-events: none;
     

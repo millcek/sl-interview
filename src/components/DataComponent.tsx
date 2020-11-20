@@ -45,7 +45,7 @@ export default function DataComponent(props: Props) {
 
   return (
     <Loading>
-      <Spinner animation="grow" />
+      <Spinner data-testid="spinner" animation="grow" />
     </Loading>
   );
 }
